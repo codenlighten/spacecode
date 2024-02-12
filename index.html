@@ -21,6 +21,7 @@
           border-radius: 8px;
           max-width: 600px;
           margin: 40px auto;
+          word-wrap: break-word;
         }
         textarea,
         button {
@@ -53,11 +54,20 @@
           display: block;
           margin-bottom: 5px;
         }
+        #title {
+          text-align: center;
+          margin-bottom: 10px;
+        }
+        #description {
+          text-align: center;
+          margin-bottom: 20px;
+        }
       </style>
     </head>
     <body>
       <div id="container">
-        <h2>Whitespace Message Encoder</h2>
+        <h1 id="title">SpaceCode</h1>
+        <p id="description">Whitespace Message Encoder</p>
         <div class="input-group">
           <label for="mainText">Main Text:</label>
           <textarea
