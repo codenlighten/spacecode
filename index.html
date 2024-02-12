@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- meta title, description, keywords -->
+    <meta name="title" content="Spacecode - Whitespace Message Encoder" />
+    <meta name="description" content="Spacecode - Whitespace Message Encoder" />
+    <meta name="keywords" content="whitespace, message, encoder, decoder" />
+    <meta name="author" content="Codenlighten1" />
+    <!-- twitter card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@codenlighten1" />
+    <meta
+      name="twitter:title"
+      content="Spacecode - Whitespace Message Encoder"
+    />
+    <meta
+      name="twitter:description"
+      content="Encode and decode messages using whitespace."
+    />
+    <!-- <meta name="twitter:image" content="https://codenlighten.com/assets/images/whitespace-message-encoder.png" /> -->
+    <!-- open graph -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spacecode - Whitespace Message Encoder</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* More modern font */
+        background-color: #f5f5f5; /* Light background for easier reading */
+        color: #333; /* Darker text for better contrast */
+        padding: 20px; /* Added padding for spacing from the window edges */
+      }
+      #container {
+        background-color: #fff; /* White background for the container */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        padding: 20px; /* Padding inside the container */
+        border-radius: 8px; /* Rounded corners for modern look */
+        max-width: 600px; /* Max width for the container */
+        margin: 40px auto; /* Centering the container with margin */
+        word-wrap: break-word; /* Break long words to avoid overflow */
+      }
+      textarea,
+      button {
+        width: 100%; /* Full width for inputs and buttons */
+        padding: 10px; /* Padding for better touch targets */
+        margin-top: 10px; /* Consistent margin for vertical spacing */
+        box-sizing: border-box; /* Box-sizing to include padding and border in the element's width */
+      }
+      textarea {
+        border: 1px solid #ccc; /* Subtle border for textareas */
+        border-radius: 4px; /* Slightly rounded corners for textareas */
+        height: auto; /* Auto height to accommodate content */
+        min-height: 100px; /* Minimum height */
+      }
+      button {
+        background-color: #007bff; /* Primary color for buttons */
+        color: white; /* Text color for buttons */
+        border: none; /* No border for buttons */
+        border-radius: 4px; /* Slightly rounded corners for buttons */
+        cursor: pointer; /* Pointer cursor on hover */
+        font-weight: bold; /* Make button text bold */
+      }
+      button:hover {
+        background-color: #0056b3; /* Darker shade on hover for feedback */
+      }
+      .input-group:not(:last-child) {
+        margin-bottom: 20px; /* Spacing between input groups, except the last one */
+      }
+      label {
+        display: block; /* Ensure labels are block-level for better alignment */
+        margin-bottom: 5px; /* Spacing between label and input */
+      }
+
+      /* Responsive styles */
+      @media (max-width: 600px) {
+        #container {
+          margin: 20px; /* Smaller margin for smaller screens */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <h1>SpaceCode</h1>
+      <p>Whitespace Message Encoder</p>
+      <div class="input-group">
+        <label for="mainText">Main Text:</label>
+        <textarea
+          id="mainText"
+          placeholder="Enter the main text here..."
+        ></textarea>
+      </div>
+      <div class="input-group">
+        <label for="hiddenMessage">Message to Hide:</label>
+        <textarea
+          id="hiddenMessage"
+          placeholder="Enter the message to hide..."
+        ></textarea>
+      </div>
+      <button onclick="encodeMessage()">Encode Message</button>
+      <button onclick="decodeMessage()">Decode Message</button>
+      <div>
+        <label for="encodedText">Encoded Text:</label>
+        <textarea
+          id="encodedText"
+          readonly
+          placeholder="The encoded text will appear here..."
+        ></textarea>
+      </div>
+    </div>
+
+    <script>
+      function encodeMessage() {
+        const mainText = document.getElementById("mainText").value;
+        const message = document.getElementById("hiddenMessage").value;
+        // Convert the message to binary, then to a sequence of spaces (0) and double spaces (1)
+        const binaryMessage = message
+          .split("")
+          .map((char) => char.charCodeAt(0).toString(2).padStart(8, "0"))
+          .join("");
+        let encodedText = mainText;
+        let spaceIndex = 0;
+
+        // Insert additional spaces in the main text to encode the binary message
+        for (let bit of binaryMessage) {
+          if (bit === "0") {
+            // Find next space in main text
+            spaceIndex = encodedText.indexOf(" ", spaceIndex + 1);
+            // Ensure there's a space to use
+            if (spaceIndex === -1) break;
+          } else if (bit === "1") {
+            // Add an extra space for '1' bits
+            spaceIndex = encodedText.indexOf(" ", spaceIndex + 1);
+            if (spaceIndex === -1) break;
+            encodedText =
+              encodedText.substring(0, spaceIndex) +
+              " " +
+              encodedText.substring(spaceIndex);
+            spaceIndex++; // Skip the inserted space to avoid double counting
+          }
+        }
+
+        document.getElementById("encodedText").value = encodedText;
+      }
+
+      function decodeMessage() {
+        const encodedText = document.getElementById("encodedText").value + " "; // Ensure trailing space for final char detection
+        let binaryString = "";
+        let spaces = 0; // Track consecutive spaces
+
+        // Iterate over the encoded text to build the binary string based on space sequences
+        for (let i = 0; i < encodedText.length; i++) {
+          if (encodedText[i] === " ") {
+            spaces++; // Count consecutive spaces
+          } else {
+            if (spaces) {
+              // Append '0' or '1' based on the count of spaces (assuming '1' for two spaces, '0' for one)
+              binaryString += spaces === 2 ? "1" : "0";
+              spaces = 0; // Reset space count after processing a sequence
+            }
+          }
+        }
+
+        // Convert the binary string to text
+        const message =
+          binaryString
+            .match(/.{1,8}/g) // Split into 8-bit segments
+            ?.map((byte) => String.fromCharCode(parseInt(byte, 2)))
+            .join("") || "No message found or decoding error.";
+
+        alert("Decoded Message: " + message);
+      }
+    </script>
+  </body>
+</html>
