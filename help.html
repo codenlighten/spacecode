@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help - Whitespace Message Encoder</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Assuming you have a CSS file for styling -->
+  </head>
+  <body>
+    <div id="container">
+      <h1>Help & Instructions</h1>
+      <h2>Using the Whitespace Message Encoder</h2>
+      <p>
+        The Whitespace Message Encoder allows you to hide messages within a
+        larger body of text by encoding the message into whitespace characters
+        (spaces and tabs). This tool can be used for educational purposes,
+        steganography, and more.
+      </p>
+
+      <h3>Encoding a Message</h3>
+      <ol>
+        <li>
+          <strong>Enter Your Main Text:</strong> Start by entering the text you
+          want to appear normal to viewers in the "Main Text" textarea.
+        </li>
+        <li>
+          <strong>Type Your Hidden Message:</strong> In the "Message to Hide"
+          textarea, type the message you wish to encode within the main text.
+        </li>
+        <li>
+          <strong>Encode:</strong> Click the "Encode Message" button. The
+          encoded text, with your hidden message, will appear in the "Encoded
+          Text" area.
+        </li>
+      </ol>
+
+      <h3>Decoding a Message</h3>
+      <ol>
+        <li>
+          <strong>Enter Encoded Text:</strong> Copy and paste the text with the
+          hidden message into the "Encoded Text" area.
+        </li>
+        <li>
+          <strong>Decode:</strong> Click the "Decode Message" button. If there
+          was a hidden message, it will be displayed; otherwise, you might see
+          an error or no output.
+        </li>
+      </ol>
+
+      <h3>FAQs</h3>
+      <dl>
+        <dt>Can the encoded message be seen?</dt>
+        <dd>
+          No, the message is hidden in the whitespace of the text and cannot be
+          seen without using the decode function of this tool.
+        </dd>
+
+        <dt>Is there a limit to the hidden message size?</dt>
+        <dd>
+          Yes, the size of the hidden message is limited by the size of the main
+          text. Larger texts can encode longer messages.
+        </dd>
+      </dl>
+
+      <h3>Troubleshooting</h3>
+      <p>
+        If you're having trouble encoding or decoding messages, ensure that:
+      </p>
+      <ul>
+        <li>
+          The main text is long enough to accommodate your hidden message.
+        </li>
+        <li>
+          You have copied the entire encoded text without missing any whitespace
+          when decoding.
+        </li>
+        <li>
+          You are not altering the encoded text before decoding, as even minor
+          changes can prevent the hidden message from being correctly retrieved.
+        </li>
+      </ul>
+
+      <p>
+        <!-- home button -->
+        <a href="/">Back to Home</a>
+      </p>
+    </div>
+  </body>
+</html>
